@@ -15,7 +15,9 @@ import com.example.compose.ui.theme.AppBackground
 fun CamerasScreen(cameras: List<Camera>) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().background(AppBackground)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppBackground)
     ) {
         itemsIndexed(cameras) { _, camera ->
             CameraItem(camera)
@@ -25,12 +27,10 @@ fun CamerasScreen(cameras: List<Camera>) {
 
 @Preview
 @Composable
-fun CamerasScreenPreview(){
+fun CamerasScreenPreview() {
     val cameras = listOf(
-        Camera("Камера 1", R.drawable.test_img, "Кабинет", true, rec = false),
-        Camera("Камера 2", R.drawable.test_img, "Зал", false, rec = true),
-        Camera("Камера 3", R.drawable.test_img, "Веранда", true, rec = true),
-        Camera("Камера 4", R.drawable.test_img, "Домофон", false, rec = false)
+        Camera("Камера 1", R.drawable.test_img.toString(), "Кабинет", true, rec = false, 1),
+        Camera("Камера 2", R.drawable.test_img.toString(), "Зал", false, rec = true, 2)
     )
     CamerasScreen(cameras)
 }

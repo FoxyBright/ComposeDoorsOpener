@@ -1,6 +1,5 @@
 package com.example.compose
 
-import com.example.compose.models.Camera
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -20,6 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.example.compose.models.Camera
 import com.example.compose.ui.theme.Circle
 import com.example.compose.ui.theme.HeadersColor
 import com.example.compose.ui.theme.TextColor
@@ -28,50 +28,44 @@ import com.example.compose.ui.theme.White
 @Composable
 fun CameraItem(camera: Camera) {
     val context = LocalContext.current
-    val alfa = if (camera.rec) 100f else 0f
     Box(
-        modifier = Modifier
+        Modifier
             .fillMaxWidth()
             .padding(
                 horizontal = 16.dp,
                 vertical = 8.dp
-            )
+            ),
     ) {
         Column {
             Text(
-                modifier = Modifier
-                    .padding(
-                        start = 2.dp,
-                        bottom = 16.dp
-                    ),
-                text = camera.room,
+                camera.room,
+                Modifier
+                    .padding(start = 2.dp, bottom = 16.dp),
                 fontFamily = Circle,
                 color = HeadersColor,
                 fontSize = 21.sp
             )
             Card {
-                Image(
-                    modifier = Modifier
+                AsyncImage(
+                    "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
+                    "camera's preview",
+                    Modifier
                         .fillMaxWidth()
-                        .clip(
-                            shape = RoundedCornerShape(
-                                topStart = 10.dp,
-                                topEnd = 10.dp
-                            )
-                        ),
-                    painter = painterResource(camera.image),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = "camera's preview"
+                        .height(230.dp)
+                        .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+                    contentScale = ContentScale.Crop
                 )
                 Column(
                     Modifier
                         .fillMaxWidth()
                         .height(230.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceAround
+                    Arrangement.SpaceAround,
+                    Alignment.CenterHorizontally
                 ) {
                     Image(
-                        modifier = Modifier
+                        painterResource(R.drawable.play_button),
+                        "play",
+                        Modifier
                             .size(60.dp)
                             .padding(top = 5.dp)
                             .clickable(
@@ -79,66 +73,58 @@ fun CameraItem(camera: Camera) {
                                     Toast
                                         .makeText(
                                             context,
-                                            "${camera.name} не отвечает",
+                                            context.getString(
+                                                R.string.camera_not_responding,
+                                                camera.name
+                                            ),
                                             Toast.LENGTH_SHORT
                                         )
                                         .show()
                                 }
                             ),
-                        contentScale = ContentScale.Crop,
-                        painter = painterResource(
-                            id = R.drawable.play_button
-                        ),
-                        contentDescription = "play"
+                        contentScale = ContentScale.Crop
                     )
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(7.dp)
                 ) {
-                    Image(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(20.dp)
-                            .alpha(alfa),
-                        painter = painterResource(
-                            id = R.drawable.rec
-                        ),
-                        contentDescription = "record"
-                    )
+                    if (camera.rec) {
+                        Image(
+                            painterResource(R.drawable.rec),
+                            "record",
+                            Modifier
+                                .size(20.dp)
+                                .align(Alignment.CenterStart)
+                        )
+                    }
                     if (camera.favorite) {
                         Image(
-                            modifier = Modifier
-                                .padding(7.dp)
-                                .size(20.dp),
-                            painter = painterResource(
-                                id = R.drawable.star
-                            ),
-                            contentDescription = "star"
+                            painterResource(R.drawable.star),
+                            "star",
+                            Modifier
+                                .size(20.dp)
+                                .align(Alignment.CenterEnd)
                         )
                     }
                 }
             }
             Box(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
-                    .clip(
-                        shape = RoundedCornerShape(
-                            bottomStart = 10.dp,
-                            bottomEnd = 10.dp,
-                        )
-                    )
+                    .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
                     .background(White)
             ) {
                 Row(
-                    modifier = Modifier
+                    Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 26.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp, bottom = 26.dp),
+                    Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = camera.name,
+                        camera.name,
                         fontSize = 17.sp,
                         color = TextColor,
                         fontFamily = Circle
@@ -152,5 +138,14 @@ fun CameraItem(camera: Camera) {
 @Preview
 @Composable
 fun CameraItemPreview() {
-    CameraItem(Camera("Камера", R.drawable.test_img, "Комната", true, rec = true))
+    CameraItem(
+        Camera(
+            "Камера",
+            "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
+            "Комната",
+            true,
+            rec = true,
+            1
+        )
+    )
 }

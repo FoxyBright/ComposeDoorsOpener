@@ -15,7 +15,9 @@ import com.example.compose.ui.theme.AppBackground
 fun DoorsScreen(doors: List<Door>) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().background(AppBackground)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppBackground)
     ) {
         itemsIndexed(doors) { _, door ->
             DoorItem(door)
@@ -25,12 +27,16 @@ fun DoorsScreen(doors: List<Door>) {
 
 @Preview
 @Composable
-fun DoorScreenPreview(){
+fun DoorScreenPreview() {
     val doors = listOf(
-        Door("Кабинет"),
-        Door("Зал"),
-        Door("Веранда"),
-        Door("Домофон", R.drawable.test_img)
+        Door("Домофон", "null", "Домофон", true, 1),
+        Door(
+            "Домофон",
+            "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
+            "Домофон",
+            true,
+            1
+        )
     )
     DoorsScreen(doors)
 }

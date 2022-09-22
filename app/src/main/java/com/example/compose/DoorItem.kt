@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.compose.models.Door
 import com.example.compose.ui.theme.NetworkColor
 import com.example.compose.ui.theme.TextColor
@@ -35,7 +36,7 @@ fun DoorItem(door: Door) {
     val rounded: Int
     val statusBarPadding: Int
     val textPadding: Int
-    if (door.image != 0) {
+    if (door.snapshot != null) {
         rounded = 0
         statusBarPadding = 0
         textPadding = 0
@@ -45,35 +46,33 @@ fun DoorItem(door: Door) {
         textPadding = 5
     }
     Box(
-        modifier = Modifier
+        Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Column {
-            if (door.image != 0) {
+            if (door.snapshot != null) {
                 Card {
-                    Image(
-                        modifier = Modifier
+                    AsyncImage(
+                        "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
+                        "camera's preview",
+                        Modifier
                             .fillMaxWidth()
-                            .clip(
-                                shape = RoundedCornerShape(
-                                    topStart = 10.dp,
-                                    topEnd = 10.dp
-                                )
-                            ),
-                        painter = painterResource(door.image),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = "camera's preview"
+                            .height(230.dp)
+                            .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+                        contentScale = ContentScale.Crop
                     )
                     Column(
                         Modifier
                             .fillMaxWidth()
                             .height(230.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceAround
+                        Arrangement.SpaceAround,
+                        Alignment.CenterHorizontally
                     ) {
                         Image(
-                            modifier = Modifier
+                            painterResource(R.drawable.play_button),
+                            "play",
+                            Modifier
                                 .size(60.dp)
                                 .padding(top = 5.dp)
                                 .clickable(
@@ -87,20 +86,16 @@ fun DoorItem(door: Door) {
                                             .show()
                                     }
                                 ),
-                            contentScale = ContentScale.Crop,
-                            painter = painterResource(
-                                id = R.drawable.play_button
-                            ),
-                            contentDescription = "play"
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }
             }
             Box(
-                modifier = Modifier
+                Modifier
                     .fillMaxWidth()
                     .clip(
-                        shape = RoundedCornerShape(
+                        RoundedCornerShape(
                             bottomStart = 10.dp,
                             bottomEnd = 10.dp,
                             topStart = rounded.dp,
@@ -110,32 +105,34 @@ fun DoorItem(door: Door) {
                     .background(White)
             ) {
                 Row(
-                    modifier = Modifier
+                    Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    Arrangement.SpaceBetween
                 ) {
                     Column(
-                        modifier = Modifier
+                        Modifier
                             .padding(bottom = statusBarPadding.dp)
                     ) {
                         Text(
-                            modifier = Modifier
-                                .padding(top = textPadding.dp),
-                            text = doorName,
-                            fontSize = 17.sp,
-                            color = TextColor
+                            doorName,
+                            Modifier
+                                .padding(textPadding.dp),
+                            TextColor,
+                            17.sp
                         )
-                        if (door.image != 0) {
+                        if (door.snapshot != null) {
                             Text(
-                                text = "В сети",
+                                "В сети",
+                                color = NetworkColor,
                                 fontSize = 14.sp,
-                                color = NetworkColor
                             )
                         }
                     }
                     Image(
-                        modifier = Modifier
+                        painterResource(R.drawable.locker),
+                        "locker",
+                        Modifier
                             .size(32.dp)
                             .padding(top = 5.dp)
                             .clickable(
@@ -148,11 +145,7 @@ fun DoorItem(door: Door) {
                                         )
                                         .show()
                                 }
-                            ),
-                        painter = painterResource(
-                            id = R.drawable.locker
-                        ),
-                        contentDescription = "locker"
+                            )
                     )
                 }
             }
@@ -163,11 +156,19 @@ fun DoorItem(door: Door) {
 @Preview
 @Composable
 fun DoorItemWithImagePreview() {
-    DoorItem(Door("Домофон", R.drawable.test_img))
+    DoorItem(
+        Door(
+            "Домофон",
+            "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
+            "Домофон",
+            true,
+            1
+        )
+    )
 }
 
 @Preview
 @Composable
 fun DoorItemWithoutImagePreview() {
-    DoorItem(Door("Веранда"))
+    DoorItem(Door("Домофон", null, "Домофон", true, 1))
 }

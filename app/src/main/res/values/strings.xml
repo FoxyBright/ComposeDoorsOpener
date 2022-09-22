@@ -1,3 +1,4 @@
 <resources>
     <string name="appName">Compose Doors Opener</string>
+    <string name="camera_not_responding">%s камера не отвечает</string>
 </resources>

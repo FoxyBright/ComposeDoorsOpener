@@ -2,8 +2,7 @@ package com.example.compose.ui.tab
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -18,8 +17,8 @@ import kotlinx.coroutines.launch
 @ExperimentalPagerApi
 @Composable
 fun TabScreen(doors: List<Door>, cameras: List<Camera>) {
-    val pagerState = rememberPagerState(2)
-    Column{
+    val pagerState = rememberPagerState(0)
+    Column {
         val list = listOf("Камеры", "Двери")
         val scope = rememberCoroutineScope()
         TabRow(
@@ -40,11 +39,11 @@ fun TabScreen(doors: List<Door>, cameras: List<Camera>) {
                 )
             }
         ) {
-            list.forEachIndexed { index, _->
+            list.forEachIndexed { index, title ->
                 Tab(
                     text = {
                         Text(
-                            list[index],
+                            text = title,
                             color = HeadersColor,
                             fontFamily = Circle,
                             fontSize = 17.sp
@@ -59,8 +58,8 @@ fun TabScreen(doors: List<Door>, cameras: List<Camera>) {
                 )
             }
         }
-        HorizontalPager(state = pagerState, count = 2) { page ->
-            when(page) {
+        HorizontalPager(state = pagerState, count = list.size) { page ->
+            when (page) {
                 0 -> CamerasScreen(cameras)
                 1 -> DoorsScreen(doors)
             }
