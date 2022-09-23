@@ -1,4 +1,4 @@
-package com.example.compose
+package com.example.compose.composable
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -15,18 +15,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.compose.models.Camera
+import com.example.compose.R
+import com.example.compose.services.database.CameraRealm
 import com.example.compose.ui.theme.Circle
 import com.example.compose.ui.theme.HeadersColor
 import com.example.compose.ui.theme.TextColor
 import com.example.compose.ui.theme.White
 
 @Composable
-fun CameraItem(camera: Camera) {
+fun CameraItem(camera: CameraRealm) {
     val context = LocalContext.current
     Box(
         Modifier
@@ -47,7 +47,7 @@ fun CameraItem(camera: Camera) {
             )
             Card {
                 AsyncImage(
-                    "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
+                    camera.snapshot,
                     "camera's preview",
                     Modifier
                         .fillMaxWidth()
@@ -99,7 +99,7 @@ fun CameraItem(camera: Camera) {
                                 .align(Alignment.CenterStart)
                         )
                     }
-                    if (camera.favorite) {
+                    if (camera.favorites) {
                         Image(
                             painterResource(R.drawable.star),
                             "star",
@@ -133,19 +133,4 @@ fun CameraItem(camera: Camera) {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun CameraItemPreview() {
-    CameraItem(
-        Camera(
-            "Камера",
-            "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
-            "Комната",
-            true,
-            rec = true,
-            1
-        )
-    )
 }

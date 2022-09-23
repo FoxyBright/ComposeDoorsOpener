@@ -1,4 +1,4 @@
-package com.example.compose
+package com.example.compose.composable
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -9,19 +9,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.compose.R
 import com.example.compose.models.Door
 import com.example.compose.ui.theme.NetworkColor
 import com.example.compose.ui.theme.TextColor
@@ -30,9 +27,6 @@ import com.example.compose.ui.theme.White
 @Composable
 fun DoorItem(door: Door) {
     val context = LocalContext.current
-    val doorName by remember {
-        mutableStateOf(door.name)
-    }
     val rounded: Int
     val statusBarPadding: Int
     val textPadding: Int
@@ -54,7 +48,7 @@ fun DoorItem(door: Door) {
             if (door.snapshot != null) {
                 Card {
                     AsyncImage(
-                        "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
+                        door.snapshot,
                         "camera's preview",
                         Modifier
                             .fillMaxWidth()
@@ -80,7 +74,7 @@ fun DoorItem(door: Door) {
                                         Toast
                                             .makeText(
                                                 context,
-                                                "$doorName не отвечает",
+                                                "${door.name} не отвечает",
                                                 Toast.LENGTH_SHORT
                                             )
                                             .show()
@@ -115,7 +109,7 @@ fun DoorItem(door: Door) {
                             .padding(bottom = statusBarPadding.dp)
                     ) {
                         Text(
-                            doorName,
+                            door.name,
                             Modifier
                                 .padding(textPadding.dp),
                             TextColor,
@@ -140,7 +134,7 @@ fun DoorItem(door: Door) {
                                     Toast
                                         .makeText(
                                             context,
-                                            "Дверь $doorName открыта",
+                                            "Дверь ${door.name} открыта",
                                             Toast.LENGTH_SHORT
                                         )
                                         .show()
@@ -151,24 +145,4 @@ fun DoorItem(door: Door) {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun DoorItemWithImagePreview() {
-    DoorItem(
-        Door(
-            "Домофон",
-            "https://serverspace.ru/wp-content/uploads/2019/06/backup-i-snapshot.png",
-            "Домофон",
-            true,
-            1
-        )
-    )
-}
-
-@Preview
-@Composable
-fun DoorItemWithoutImagePreview() {
-    DoorItem(Door("Домофон", null, "Домофон", true, 1))
 }
