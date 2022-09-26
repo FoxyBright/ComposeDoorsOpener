@@ -6,8 +6,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.R
+import com.example.compose.models.Camera
 import com.example.compose.models.Door
 import com.example.compose.ui.theme.AppBackground
 import com.example.compose.ui.theme.Circle
@@ -16,7 +20,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 
 @Composable
 @ExperimentalPagerApi
-fun MainScreen(doors: List<Door>) {
+fun MainScreen(doors: List<Door>, cameras: List<Camera>) {
     Column(
         Modifier
             .fillMaxSize()
@@ -31,12 +35,37 @@ fun MainScreen(doors: List<Door>) {
             Alignment.CenterHorizontally
         ) {
             Text(
-                "Мой дом",
+                stringResource(R.string.my_home),
                 fontSize = 21.sp,
                 color = HeadersColor,
                 fontFamily = Circle
             )
         }
-        TabScreen(doors)
+        TabScreen(doors, cameras)
     }
+}
+
+@Preview
+@Composable
+@ExperimentalPagerApi
+fun MainScreenPreview() {
+    val camera = Camera(
+        1,
+        "Camera",
+        "Image",
+        "Room",
+        true,
+        rec = true
+    )
+    val door = Door(
+        1,
+        "Door",
+        "Image",
+        "Room",
+        true
+    )
+    MainScreen(
+        listOf(door, door),
+        listOf(camera, camera)
+    )
 }

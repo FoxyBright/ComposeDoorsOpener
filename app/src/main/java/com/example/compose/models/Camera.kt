@@ -1,10 +1,10 @@
 package com.example.compose.models
 
 data class Camera(
+    val id: Int,
     val name: String,
     val snapshot: String,
     var room: String,
     val favorites: Boolean,
-    val rec: Boolean,
-    val id: Int
+    val rec: Boolean
 )

@@ -1,5 +1,6 @@
 package com.example.compose.services.database
 
+import com.example.compose.models.Camera
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
@@ -13,4 +14,6 @@ open class CameraRealm : RealmObject() {
     var room: String = ""
     var favorites: Boolean = false
     var rec: Boolean = false
+
+    fun map() = Camera(id, name, snapshot, room, favorites, rec)
 }

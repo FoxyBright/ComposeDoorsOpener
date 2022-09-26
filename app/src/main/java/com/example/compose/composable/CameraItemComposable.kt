@@ -15,44 +15,45 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.compose.R
-import com.example.compose.services.database.CameraRealm
+import com.example.compose.models.Camera
 import com.example.compose.ui.theme.Circle
 import com.example.compose.ui.theme.HeadersColor
 import com.example.compose.ui.theme.TextColor
 import com.example.compose.ui.theme.White
+import com.google.accompanist.pager.ExperimentalPagerApi
 
 @Composable
-fun CameraItem(camera: CameraRealm) {
+fun CameraItem(camera: Camera) {
     val context = LocalContext.current
     Box(
         Modifier
             .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp
-            ),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Column {
             Text(
                 camera.room,
                 Modifier
                     .padding(start = 2.dp, bottom = 16.dp),
-                fontFamily = Circle,
-                color = HeadersColor,
-                fontSize = 21.sp
+                HeadersColor,
+                21.sp,
+                fontFamily = Circle
             )
             Card {
                 AsyncImage(
                     camera.snapshot,
-                    "camera's preview",
+                    stringResource(R.string.camera_preview),
                     Modifier
                         .fillMaxWidth()
                         .height(230.dp)
                         .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+                    painterResource(R.drawable.test_img),
                     contentScale = ContentScale.Crop
                 )
                 Column(
@@ -64,24 +65,22 @@ fun CameraItem(camera: CameraRealm) {
                 ) {
                     Image(
                         painterResource(R.drawable.play_button),
-                        "play",
+                        stringResource(R.string.play),
                         Modifier
                             .size(60.dp)
                             .padding(top = 5.dp)
-                            .clickable(
-                                onClick = {
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            context.getString(
-                                                R.string.camera_not_responding,
-                                                camera.name
-                                            ),
-                                            Toast.LENGTH_SHORT
-                                        )
-                                        .show()
-                                }
-                            ),
+                            .clickable {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        context.getString(
+                                            R.string.object_not_responding,
+                                            camera.name
+                                        ),
+                                        Toast.LENGTH_SHORT
+                                    )
+                                    .show()
+                            },
                         contentScale = ContentScale.Crop
                     )
                 }
@@ -93,7 +92,7 @@ fun CameraItem(camera: CameraRealm) {
                     if (camera.rec) {
                         Image(
                             painterResource(R.drawable.rec),
-                            "record",
+                            stringResource(R.string.record),
                             Modifier
                                 .size(20.dp)
                                 .align(Alignment.CenterStart)
@@ -102,7 +101,7 @@ fun CameraItem(camera: CameraRealm) {
                     if (camera.favorites) {
                         Image(
                             painterResource(R.drawable.star),
-                            "star",
+                            stringResource(R.string.favorite),
                             Modifier
                                 .size(20.dp)
                                 .align(Alignment.CenterEnd)
@@ -133,4 +132,20 @@ fun CameraItem(camera: CameraRealm) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+@ExperimentalPagerApi
+fun CameraItemPreview() {
+    CameraItem(
+        Camera(
+            1,
+            "Camera",
+            "Image",
+            "Room",
+            true,
+            rec = true
+        )
+    )
 }

@@ -1,7 +1,7 @@
 package com.example.compose.services.retrofit
 
-import com.example.compose.services.responces.CamerasResponse
-import com.example.compose.services.responces.DoorResponse
+import com.example.compose.services.retrofit.responces.CamerasResponse
+import com.example.compose.services.retrofit.responces.DoorResponse
 import retrofit2.Call
 import retrofit2.http.GET
 

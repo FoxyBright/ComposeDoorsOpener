@@ -15,6 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -49,11 +51,12 @@ fun DoorItem(door: Door) {
                 Card {
                     AsyncImage(
                         door.snapshot,
-                        "camera's preview",
+                        stringResource(id = R.string.camera_preview),
                         Modifier
                             .fillMaxWidth()
                             .height(230.dp)
                             .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+                        painterResource(R.drawable.test_img),
                         contentScale = ContentScale.Crop
                     )
                     Column(
@@ -65,21 +68,13 @@ fun DoorItem(door: Door) {
                     ) {
                         Image(
                             painterResource(R.drawable.play_button),
-                            "play",
+                            stringResource(R.string.play),
                             Modifier
                                 .size(60.dp)
                                 .padding(top = 5.dp)
-                                .clickable(
-                                    onClick = {
-                                        Toast
-                                            .makeText(
-                                                context,
-                                                "${door.name} не отвечает",
-                                                Toast.LENGTH_SHORT
-                                            )
-                                            .show()
-                                    }
-                                ),
+                                .clickable {
+
+                                },
                             contentScale = ContentScale.Crop
                         )
                     }
@@ -117,7 +112,7 @@ fun DoorItem(door: Door) {
                         )
                         if (door.snapshot != null) {
                             Text(
-                                "В сети",
+                                stringResource(R.string.online),
                                 color = NetworkColor,
                                 fontSize = 14.sp,
                             )
@@ -125,24 +120,53 @@ fun DoorItem(door: Door) {
                     }
                     Image(
                         painterResource(R.drawable.locker),
-                        "locker",
+                        stringResource(R.string.door_lock),
                         Modifier
                             .size(32.dp)
                             .padding(top = 5.dp)
-                            .clickable(
-                                onClick = {
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            "Дверь ${door.name} открыта",
-                                            Toast.LENGTH_SHORT
-                                        )
-                                        .show()
-                                }
-                            )
+                            .clickable {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        context.getString(
+                                            R.string.door_is_opened,
+                                            door.name
+                                        ),
+                                        Toast.LENGTH_SHORT
+                                    )
+                                    .show()
+                            }
                     )
                 }
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun DoorItemPreview() {
+    DoorItem(
+        Door(
+            1,
+            "Домофон",
+            "image",
+            "Гостинная",
+            true
+        )
+    )
+}
+
+@Preview
+@Composable
+fun DoorItemWithoutImagePreview() {
+    DoorItem(
+        Door(
+            1,
+            "Домофон",
+            null,
+            "Гостинная",
+            true
+        )
+    )
 }

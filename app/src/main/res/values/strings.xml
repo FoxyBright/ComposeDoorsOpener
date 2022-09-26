@@ -1,4 +1,28 @@
 <resources>
-    <string name="appName">Compose Doors Opener</string>
-    <string name="camera_not_responding">%s камера не отвечает</string>
+    <string name="app_name">Compose Doors Opener</string>
+    <string name="object_not_responding">%s не отвечает</string>
+    <string name="door_is_opened">Дверь %s открыта</string>
+    <string name="doors">Двери</string>
+    <string name="cameras">Камеры</string>
+    <string name="online">В сети</string>
+    <string name="my_home">Мой дом</string>
+    <string name="settings">Настройки</string>
+    <string name="live_broadcast">Прямая\nтрансляция</string>
+    <string name="visitors">2</string>
+    <string name="communal_intercom">Общедомовой домофон</string>
+
+    //Descriptions
+    <string name="play">Просмотр</string>
+    <string name="camera_preview">Предпросмотр камеры</string>
+    <string name="record">Запись</string>
+    <string name="favorite">Избранное</string>
+    <string name="door_lock">Дверной замок</string>
+    <string name="open_door">Открыть дверь</string>
+    <string name="back">Назад</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="black_screen">Функция в доработке</string>
+    <string name="change_vide_size">Изменить размер видео</string>
+    <string name="point">Точка</string>
+    <string name="eye">Посетители</string>
+    <string name="transparency">Полупрозрачный блок</string>
 </resources>

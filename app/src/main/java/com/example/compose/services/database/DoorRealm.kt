@@ -14,7 +14,5 @@ open class DoorRealm : RealmObject() {
     var room: String? = null
     var favorites: Boolean = false
 
-    fun map() = Door(
-        id, name, snapshot, room, favorites
-    )
+    fun map() = Door(id, name, snapshot, room, favorites)
 }

@@ -1,8 +1,8 @@
 package com.example.compose.services.database
 
 import android.util.Log
-import com.example.compose.services.responces.CamerasResponse
-import com.example.compose.services.responces.DoorResponse
+import com.example.compose.services.retrofit.responces.CamerasResponse
+import com.example.compose.services.retrofit.responces.DoorResponse
 import com.example.compose.services.retrofit.API
 import com.example.compose.services.retrofit.RetrofitAPI
 import io.realm.Realm
