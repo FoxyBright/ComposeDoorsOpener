@@ -7,9 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.R
 import com.example.compose.models.Door
+import com.example.compose.services.database.setDoorFavorite
 import com.example.compose.ui.theme.AppBackground
 import com.example.compose.viewModel.DoorsViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -27,6 +26,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel) {
     val context = LocalContext.current
     val revealedDoorsIdsList by doorsViewModel.revealedDoorsIdsList.collectAsState()
+
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -34,6 +34,14 @@ fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel) {
             .background(AppBackground)
     ) {
         itemsIndexed(doors) { _, door ->
+            var imageResource by remember {
+                mutableStateOf(
+                    if (door.favorites)
+                        R.drawable.favorite_activate
+                    else
+                        R.drawable.favorite_disactivate
+                )
+            }
             Box(Modifier.fillMaxWidth()) {
                 Row(
                     Modifier
@@ -56,22 +64,36 @@ fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel) {
                                     .show()
                             })
                     Image(
-                        painterResource(R.drawable.favorite_disactivate),
+                        painterResource(imageResource),
                         stringResource(R.string.favorite),
                         Modifier
                             .padding(start = 5.dp, top = 10.dp)
                             .size(46.dp)
                             .clickable {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        context.getString(R.string.favorite),
-                                        Toast.LENGTH_SHORT
-                                    )
-                                    .show()
+                                setDoorFavorite(door.id, !door.favorites)
+                                if (door.favorites)
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "${door.name} удалена из избранного",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        .show()
+                                else
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "${door.name} добавлена в избранное",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        .show()
+                                imageResource = if (door.favorites)
+                                    R.drawable.favorite_disactivate
+                                else
+                                    R.drawable.favorite_activate
+                                doorsViewModel.onItemCollapsed(door.id)
                             })
                 }
-
                 DoorItem(
                     door, revealedDoorsIdsList.contains(door.id),
                     { doorsViewModel.onItemCollapsed(door.id) },
