@@ -1,22 +1,32 @@
 package com.example.compose.composable
 
+import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.widget.Toast
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -27,14 +37,35 @@ import com.example.compose.ui.theme.HeadersColor
 import com.example.compose.ui.theme.TextColor
 import com.example.compose.ui.theme.White
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlin.math.roundToInt
 
+@SuppressLint("UnusedTransitionTargetStateParameter")
 @Composable
-fun CameraItem(camera: Camera) {
+fun CameraItem(camera: Camera, isRevealed: Boolean, onCollapse: () -> Unit, onExpand: () -> Unit) {
     val context = LocalContext.current
+    val offsetTransition = updateTransition(
+        remember {
+            MutableTransitionState(isRevealed).apply { targetState = !isRevealed }
+        },
+        "Transition"
+    ).animateFloat(
+        { tween(durationMillis = 500) },
+        "OffsetTransition",
+        { if (isRevealed) -(56f * Resources.getSystem().displayMetrics.density + 0.5f) else 0f },
+    ).value.roundToInt()
     Box(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .offset { IntOffset(offsetTransition, 0) }
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures { _, dragAmount ->
+                    when {
+                        dragAmount >= 6 -> onCollapse()
+                        dragAmount < -6 -> onExpand()
+                    }
+                }
+            }
     ) {
         Column {
             Text(
@@ -53,7 +84,7 @@ fun CameraItem(camera: Camera) {
                         .fillMaxWidth()
                         .height(230.dp)
                         .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
-                    painterResource(R.drawable.test_img),
+                    painterResource(R.drawable.loading),
                     contentScale = ContentScale.Crop
                 )
                 Column(
@@ -146,6 +177,9 @@ fun CameraItemPreview() {
             "Room",
             true,
             rec = true
-        )
+        ),
+        false,
+        {},
+        {}
     )
 }

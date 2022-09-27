@@ -24,4 +24,5 @@
     <string name="transparency">Translucent block</string>
     <string name="visitors">2</string>
     <string name="communal_intercom">Communal intercom</string>
+    <string name="edit">Edit</string>
 </resources>

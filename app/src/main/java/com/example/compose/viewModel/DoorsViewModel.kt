@@ -7,10 +7,7 @@ import com.example.compose.services.database.DoorRealm
 import io.realm.Realm
 import io.realm.kotlin.toFlow
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 
 class DoorsViewModel : ViewModel() {
     val doors: Flow<List<Door>> = Realm.getDefaultInstance()
@@ -22,5 +19,24 @@ class DoorsViewModel : ViewModel() {
 
     init {
         doors.launchIn(viewModelScope)
+    }
+
+    private val _revealedDoorsIdsList = MutableStateFlow(listOf<Int>())
+    val revealedDoorsIdsList: StateFlow<List<Int>> get() = _revealedDoorsIdsList
+
+    fun onItemExpanded(doorId: Int) {
+        if (_revealedDoorsIdsList.value.contains(doorId)) return
+        _revealedDoorsIdsList.value = _revealedDoorsIdsList.value.toMutableList().also { list ->
+            if (list.size > 0)
+                list.clear()
+            list.add(doorId)
+        }
+    }
+
+    fun onItemCollapsed(doorId: Int) {
+        if (!_revealedDoorsIdsList.value.contains(doorId)) return
+        _revealedDoorsIdsList.value = _revealedDoorsIdsList.value.toMutableList().also { list ->
+            list.remove(doorId)
+        }
     }
 }

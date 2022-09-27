@@ -16,11 +16,13 @@ import com.example.compose.models.Door
 import com.example.compose.ui.theme.AppBackground
 import com.example.compose.ui.theme.Circle
 import com.example.compose.ui.theme.HeadersColor
+import com.example.compose.viewModel.CamerasViewModel
+import com.example.compose.viewModel.DoorsViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @Composable
 @ExperimentalPagerApi
-fun MainScreen(doors: List<Door>, cameras: List<Camera>) {
+fun MainScreen(doors: List<Door>, cameras: List<Camera>, camerasViewModel: CamerasViewModel, doorsViewModel: DoorsViewModel) {
     Column(
         Modifier
             .fillMaxSize()
@@ -41,7 +43,7 @@ fun MainScreen(doors: List<Door>, cameras: List<Camera>) {
                 fontFamily = Circle
             )
         }
-        TabScreen(doors, cameras)
+        TabScreen(doors, cameras, camerasViewModel, doorsViewModel)
     }
 }
 
@@ -66,6 +68,8 @@ fun MainScreenPreview() {
     )
     MainScreen(
         listOf(door, door),
-        listOf(camera, camera)
+        listOf(camera, camera),
+        CamerasViewModel(),
+        DoorsViewModel()
     )
 }

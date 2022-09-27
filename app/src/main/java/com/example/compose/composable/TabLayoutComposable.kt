@@ -16,6 +16,8 @@ import com.example.compose.R
 import com.example.compose.models.Camera
 import com.example.compose.models.Door
 import com.example.compose.ui.theme.*
+import com.example.compose.viewModel.CamerasViewModel
+import com.example.compose.viewModel.DoorsViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -24,7 +26,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalPagerApi
 @Composable
-fun TabScreen(doors: List<Door>, cameras: List<Camera>) {
+fun TabScreen(doors: List<Door>, cameras: List<Camera>, camerasViewModel: CamerasViewModel, doorsViewModel: DoorsViewModel) {
     val pagerState = rememberPagerState(0)
     Column {
         val list: List<String> =
@@ -62,8 +64,8 @@ fun TabScreen(doors: List<Door>, cameras: List<Camera>) {
         }
         HorizontalPager(list.size, state = pagerState) { page ->
             when (page) {
-                0 -> CamerasScreen(cameras)
-                1 -> DoorsScreen(doors)
+                0 -> CamerasScreen(cameras, camerasViewModel)
+                1 -> DoorsScreen(doors, doorsViewModel)
             }
         }
     }
@@ -90,6 +92,8 @@ fun TabScreenPreview() {
     )
     TabScreen(
         listOf(door, door),
-        listOf(camera, camera)
+        listOf(camera, camera),
+        CamerasViewModel(),
+        DoorsViewModel()
     )
 }
