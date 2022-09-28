@@ -10,6 +10,8 @@
     <string name="live_broadcast">Прямая\nтрансляция</string>
     <string name="visitors">2</string>
     <string name="communal_intercom">Общедомовой домофон</string>
+    <string name="delete_from_favorite">%s удалена из избранного</string>
+    <string name="add_to_favorite">%s добавлена в избранное</string>
 
     //Descriptions
     <string name="play">Просмотр</string>

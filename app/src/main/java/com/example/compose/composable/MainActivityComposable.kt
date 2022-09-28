@@ -22,7 +22,12 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 
 @Composable
 @ExperimentalPagerApi
-fun MainScreen(doors: List<Door>, cameras: List<Camera>, camerasViewModel: CamerasViewModel, doorsViewModel: DoorsViewModel) {
+fun MainScreen(
+    doors: List<Door>,
+    cameras: List<Camera>,
+    camerasViewModel: CamerasViewModel,
+    doorsViewModel: DoorsViewModel
+) {
     Column(
         Modifier
             .fillMaxSize()

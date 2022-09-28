@@ -26,7 +26,12 @@ import kotlinx.coroutines.launch
 
 @ExperimentalPagerApi
 @Composable
-fun TabScreen(doors: List<Door>, cameras: List<Camera>, camerasViewModel: CamerasViewModel, doorsViewModel: DoorsViewModel) {
+fun TabScreen(
+    doors: List<Door>,
+    cameras: List<Camera>,
+    camerasViewModel: CamerasViewModel,
+    doorsViewModel: DoorsViewModel
+) {
     val pagerState = rememberPagerState(0)
     Column {
         val list: List<String> =
