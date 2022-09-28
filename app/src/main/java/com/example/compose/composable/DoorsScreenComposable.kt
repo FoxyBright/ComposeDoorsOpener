@@ -1,6 +1,5 @@
 package com.example.compose.composable
 
-import android.app.AlertDialog
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,27 +7,33 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.R
 import com.example.compose.models.Door
 import com.example.compose.services.database.setDoorFavorite
 import com.example.compose.services.database.setDoorName
-import com.example.compose.ui.theme.*
+import com.example.compose.ui.theme.AppBackground
+import com.example.compose.ui.theme.Circle
+import com.example.compose.ui.theme.GrandBlue
+import com.example.compose.ui.theme.TextColor
 import com.example.compose.viewModel.DoorsViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @Composable
-fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel) {
+fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel, navController: NavController) {
     val context = LocalContext.current
     val revealedDoorsIdsList by doorsViewModel.revealedDoorsIdsList.collectAsState()
     val dialogState = remember { mutableStateOf(false) }
@@ -94,7 +99,7 @@ fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel) {
                             },
                             title = {
                                 Text(
-                                    "Введите новое имя:",
+                                    "Имя двери:",
                                     Modifier.padding(5.dp),
                                     TextColor,
                                     18.sp,
@@ -154,7 +159,8 @@ fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel) {
                 DoorItem(
                     door, revealedDoorsIdsList.contains(door.id),
                     { doorsViewModel.onItemCollapsed(door.id) },
-                    { doorsViewModel.onItemExpanded(door.id) })
+                    { doorsViewModel.onItemExpanded(door.id) },
+                    navController)
             }
         }
     }
@@ -180,6 +186,7 @@ fun DoorsScreenPreview() {
     )
     DoorsScreen(
         listOf(door, door, door, doorWithImage),
-        DoorsViewModel()
+        DoorsViewModel(),
+        rememberNavController()
     )
 }
