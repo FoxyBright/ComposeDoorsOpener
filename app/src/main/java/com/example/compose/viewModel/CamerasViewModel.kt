@@ -39,4 +39,10 @@ class CamerasViewModel : ViewModel() {
             list.remove(cameraId)
         }
     }
+
+    fun allCollapse() {
+        _revealedCamerasIdsList.value = _revealedCamerasIdsList.value.toMutableList().also { list ->
+            list.clear()
+        }
+    }
 }

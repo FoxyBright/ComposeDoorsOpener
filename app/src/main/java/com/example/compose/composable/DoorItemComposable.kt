@@ -29,6 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.compose.R
 import com.example.compose.models.Door
@@ -39,7 +41,7 @@ import kotlin.math.roundToInt
 
 @Composable
 @SuppressLint("UnusedTransitionTargetStateParameter")
-fun DoorItem(door: Door, isRevealed: Boolean, onCollapse: () -> Unit, onExpand: () -> Unit) {
+fun DoorItem(door: Door, isRevealed: Boolean, onCollapse: () -> Unit, onExpand: () -> Unit, navController: NavController) {
     val context = LocalContext.current
     val rounded: Int
     val statusBarPadding: Int
@@ -104,7 +106,7 @@ fun DoorItem(door: Door, isRevealed: Boolean, onCollapse: () -> Unit, onExpand: 
                                 .size(60.dp)
                                 .padding(top = 5.dp)
                                 .clickable {
-                                    //TODO: Запуск интеркома
+                                    navController.navigate("intercom")
                                 },
                             contentScale = ContentScale.Crop
                         )
@@ -187,7 +189,8 @@ fun DoorItemPreview() {
         ),
         false,
         {},
-        {}
+        {},
+        rememberNavController()
     )
 }
 
@@ -202,8 +205,9 @@ fun DoorItemWithoutImagePreview() {
             "Гостинная",
             true
         ),
-        false,
+        true,
         {},
-        {}
+        {},
+        rememberNavController()
     )
 }

@@ -39,4 +39,11 @@ class DoorsViewModel : ViewModel() {
             list.remove(doorId)
         }
     }
+
+    fun allCollapse() {
+        _revealedDoorsIdsList.value = _revealedDoorsIdsList.value.toMutableList().also { list ->
+            list.clear()
+        }
+    }
+
 }

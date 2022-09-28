@@ -10,6 +10,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.R
 import com.example.compose.models.Camera
 import com.example.compose.models.Door
@@ -26,7 +28,8 @@ fun MainScreen(
     doors: List<Door>,
     cameras: List<Camera>,
     camerasViewModel: CamerasViewModel,
-    doorsViewModel: DoorsViewModel
+    doorsViewModel: DoorsViewModel,
+    navController: NavController
 ) {
     Column(
         Modifier
@@ -48,7 +51,7 @@ fun MainScreen(
                 fontFamily = Circle
             )
         }
-        TabScreen(doors, cameras, camerasViewModel, doorsViewModel)
+        TabScreen(doors, cameras, camerasViewModel, doorsViewModel, navController)
     }
 }
 
@@ -75,6 +78,7 @@ fun MainScreenPreview() {
         listOf(door, door),
         listOf(camera, camera),
         CamerasViewModel(),
-        DoorsViewModel()
+        DoorsViewModel(),
+        rememberNavController()
     )
 }

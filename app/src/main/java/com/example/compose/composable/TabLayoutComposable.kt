@@ -12,6 +12,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.R
 import com.example.compose.models.Camera
 import com.example.compose.models.Door
@@ -30,7 +32,8 @@ fun TabScreen(
     doors: List<Door>,
     cameras: List<Camera>,
     camerasViewModel: CamerasViewModel,
-    doorsViewModel: DoorsViewModel
+    doorsViewModel: DoorsViewModel,
+    navController: NavController
 ) {
     val pagerState = rememberPagerState(0)
     Column {
@@ -69,8 +72,16 @@ fun TabScreen(
         }
         HorizontalPager(list.size, state = pagerState) { page ->
             when (page) {
-                0 -> CamerasScreen(cameras, camerasViewModel)
-                1 -> DoorsScreen(doors, doorsViewModel)
+                0 -> {
+                    doorsViewModel.allCollapse()
+                    camerasViewModel.allCollapse()
+                    CamerasScreen(cameras, camerasViewModel)
+                }
+                1 -> {
+                    doorsViewModel.allCollapse()
+                    camerasViewModel.allCollapse()
+                    DoorsScreen(doors, doorsViewModel, navController)
+                }
             }
         }
     }
@@ -99,6 +110,7 @@ fun TabScreenPreview() {
         listOf(door, door),
         listOf(camera, camera),
         CamerasViewModel(),
-        DoorsViewModel()
+        DoorsViewModel(),
+        rememberNavController()
     )
 }

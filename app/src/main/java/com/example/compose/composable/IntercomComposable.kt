@@ -17,11 +17,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.R
 import com.example.compose.ui.theme.*
 
 @Composable
-fun IntercomComposable() {
+fun IntercomComposable(navController: NavController) {
     val context = LocalContext.current
     Box(
         Modifier
@@ -122,7 +124,16 @@ fun IntercomComposable() {
                     Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = 16.dp)
+                        .clickable {
+                            Toast
+                                .makeText(
+                                    context,
+                                    context.getString(R.string.door_is_opened, ""),
+                                    Toast.LENGTH_SHORT
+                                )
+                                .show()
+                        },
                     elevation = 1.dp
                 ) {
                     Column(
@@ -132,17 +143,7 @@ fun IntercomComposable() {
                         Image(
                             painterResource(R.drawable.key),
                             stringResource(R.string.open_door),
-                            Modifier
-                                .size(30.dp)
-                                .clickable {
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            context.getString(R.string.door_is_opened, ""),
-                                            Toast.LENGTH_SHORT
-                                        )
-                                        .show()
-                                }
+                            Modifier.size(40.dp)
                         )
                         Text(
                             stringResource(R.string.open_door),
@@ -168,8 +169,11 @@ fun IntercomComposable() {
                         Image(
                             painterResource(R.drawable.back),
                             stringResource(R.string.back),
-                            Modifier.size(32.dp)
-                        )
+                            Modifier
+                                .size(32.dp)
+                                .clickable {
+                                    navController.navigate("home")
+                                })
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Image(
                                 painterResource(R.drawable.top_arrow),
@@ -198,6 +202,6 @@ fun IntercomComposable() {
 
 @Preview
 @Composable
-fun IntercomComposablePreview(){
-    IntercomComposable()
+fun IntercomComposablePreview() {
+    IntercomComposable(rememberNavController())
 }
