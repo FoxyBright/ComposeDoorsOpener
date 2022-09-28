@@ -71,7 +71,7 @@ fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel, navController
                                     Arrangement.End
                                 ) {
                                     Text(
-                                        "Отмена",
+                                        stringResource(R.string.cancel),
                                         Modifier
                                             .padding(5.dp)
                                             .clickable {
@@ -83,7 +83,7 @@ fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel, navController
                                         fontFamily = Circle
                                     )
                                     Text(
-                                        "Сохранить",
+                                        stringResource(R.string.save),
                                         Modifier
                                             .padding(5.dp)
                                             .clickable {
@@ -99,7 +99,7 @@ fun DoorsScreen(doors: List<Door>, doorsViewModel: DoorsViewModel, navController
                             },
                             title = {
                                 Text(
-                                    "Имя двери:",
+                                    stringResource(R.string.door_name),
                                     Modifier.padding(5.dp),
                                     TextColor,
                                     18.sp,

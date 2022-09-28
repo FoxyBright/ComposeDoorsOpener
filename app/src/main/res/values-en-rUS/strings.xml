@@ -27,4 +27,7 @@
     <string name="edit">Edit</string>
     <string name="delete_from_favorite">%s delete from favorite</string>
     <string name="add_to_favorite">%s add to favorite</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="door_name">Door name:</string>
 </resources>
